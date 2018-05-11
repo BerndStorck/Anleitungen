@@ -1,0 +1,97 @@
+                     Installationsanleitung "TkMan"
+                     ══════════════════════════════
+
+Dieses Dokument beschreibt, vermutlich vollständig, was ich getan habe,
+um TkMan auf meinem System unter Linux Mint 18.3 zum Laufen zu bekommen.
+Ich hoffe, es hilft anderen.
+
+Bernd Storck, 11. Mai 2018, zuerst veröffentlicht unter
+www.facebook.com/BStLinux/
+
+Abschnitt 1: Download von TkMan
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+
+    Der Quellkode kann heruntergeladen werden von
+    sourceforge.net/projects/tkman
+
+    Entpackt wird die dann vorliegende Archivdatei mit dem Kommando
+    tar. Angenommen, die heruntergeladene Datei heißt tkman-2.2.tar.gz
+    und liegt im Verzeichnis ~/Downloads, dann kann sie mit folgenden
+    Kommandos entpackt werden:
+
+      cd ~/Downloads
+      tar xvzf tkman-2.2.tar.gz
+
+Abschnitt 2: Benötigte Programme
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+
+    TkMan braucht einige andere Programme für seine Arbeit, die
+    zusätzlich installiert sein müssen.
+
+2.1 PolyglotMan
+
+    TkMan benötigt das Programm *PolyglotMan* (vormals „RosettaMan“).
+
+      PolyglotMan [...] ist ein Filter für UNIX-Handbuchseiten. Es nimmt
+      als Eingabe Handbuchseiten („man pages“), die für eine Vielzahl
+      von Unix-Varianten formatiert sind (keine [tn]roff­Quellen) und
+      produziert als Ausgabe eine Vielzahl von Dateiformaten.
+
+    Installiert wird es unter dem Paketnamen rman:
+
+      sudo apt install rman
+
+2.2 wish
+
+    Zusätzlich musste ich das Paket wish installieren:
+
+      sudo apt install wish
+
+2.3 glimpse
+
+    TkMan benutzt optional das Volltextsuchprogramm glimpse. Diese
+    Option habe ich vorerst deaktiviert, indem ich im Makefile von TkMan
+    die im Folgenden zu unterst stehende Zeile („glimpse = "glimpse -
+    W"“) auskommentiert, also deaktiviert habe:
+
+        # # # GLIMPSE # # # 
+        
+        # OPTIONAL
+        # Add full text search of manual pages with Glimpse.
+        # For more information about Glimpse see 
+        # http://glimpse.cs.arizona.edu/
+        # or ftp the glimpse software from [...]
+        # [...]
+        # so how can you lose?
+        #
+        # Once installing and linking to glimpse, build [...]
+        # the right-topmost menu's Rebuild Database [...]
+        
+        # BY DEFAULT OFF
+        glimpse = ""
+        # Glimpse on, with Boolean scope set to entire file
+        # glimpse = "glimpse -W"
+
+Abschnitt 3: Korrektur eines Programmfehlers
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+
+    Um einen Fehler, der sonst regelmäßig beim Programmstart auftritt,
+    zu beheben, muss die Datei *gui.tcl* editiert werden. Man sucht
+    darin nach einer Zeile mit dem Text „set rm [expr {[winfo“ und fügt
+    über dieser Zeile das Kommando „update“ ein:
+
+      # Bernd Storck (2018-05-11): Added due to 
+      # https://sourceforge.net/p/tkman/bugs/6/
+             update
+             
+             set rm [expr {[winfo width $t]-2*[$t cget -padx]-10}]
+
+Abschnitt 4: Installationsbefehl für TkMan
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+
+    Die abschließende Installation von TkMan erledigt die im TkMan-
+    Verzeichnis einzugebende Kommandofolge:
+
+        cd ~/Downloads\tkman-2.2
+        sudo make && sudo make install
+
