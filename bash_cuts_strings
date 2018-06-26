@@ -1,0 +1,20 @@
+#! /bin/bash
+
+text="langes_wort"
+
+echo "$text	 # \$text, der komplette Text"
+echo
+echo "01234567890123"
+echo "|   |"
+echo $text
+echo "${text:0:5}		 # \${text:0:5}, die ersten fuenf Zeichen von \"$text\"."
+echo
+echo "01234567890123"
+echo "       |"
+echo $text
+echo "${text:7}		 # \${text:7}, alles ab den achten Zeichen."
+echo
+echo "01234567890123"
+echo "       ||"
+echo $text
+echo "${text:7:2}		 # \${text:7:2}, mit dem achten Zeichen beginnend genau zwei Zeichen herausgreifen."
